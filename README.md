@@ -68,6 +68,58 @@ The `/config.xml` has been thoroughly documented. Please do not run `cordova plu
   cd ..
   ```
 
+  * PhraseApp cli:
+
+  ```
+  brew tap phrase/brewed
+  brew install phraseapp
+  cp .phraseapp.yml.sample .phraseapp.yml
+  ```
+
+Edit `.phraseapp.yml`, replace `YOUR_ACCESS_TOKEN` with your
+[phraseapp.com](phraseapp.com) access token. You can
+(generate an access token here)[https://phraseapp.com/settings/oauth_access_tokens].
+
+### Adding new Phraseapp language translations
+
+Adding a new translation is easy!
+
+*Step 1*: Add the new translation key to phraseapp.com.
+
+Visit [phraseapp](http://phraseapp.com), sign in, browse to the Falling Fruit mobile 
+project, select the desired locale (start with English/en), and create your new 
+translation key.
+
+When naming your translation key, follow this convention:
+
+`<template name>.<key name>`
+
+For example, if you're adding a key called `map_btn` to the `search.jade` template,
+you'll want to name the full key `search.map_btn`.
+
+*Step 2*: Update your translation files
+
+Provided you've setup the Phraseapp CLI program (instructions above), just run:
+
+```
+phraseapp pull
+```
+
+This will update the translation files in `www/locales/*.json`.
+
+*Step 3*: Replace the string in your template with the translation key
+
+```pug
+/ Instead of this:
+button(type='button', ng-class='map-btn') Map
+
+/ Add a translate="YOUR_TRANSLATION_KEY" attribute and remove the innerHTML
+button(type='button', ng-class='map-btn', translate='search.map_btn')
+```
+
+Your commit should look something like this example: 
+[1f65a50](https://github.com/bion/falling-fruit-mobile/commit/1f65a504ab4d0bfb70e3063d30040174c0071cf1)
+
 ### Develop with grunt
 
 Grunt is used to compile source code in `/src` into `/www`:
@@ -205,7 +257,7 @@ Once you have built successfully, open `platforms/ios/FallingFruit.xcodeproj` in
 (coming soon!)
 
 ## Icons & Splashscreens
-	http://ionicframework.com/docs/cli/icon-splashscreen.html
+    http://ionicframework.com/docs/cli/icon-splashscreen.html
 
   * ionic cli must be installed like comes with a new app (http://ionicframework.com/getting-started/)
   * Save an icon.png, icon.psd or icon.ai file within the resources directory at the root of the Cordova project. The icon image's minimum dimensions should be 192x192 px, and should have no rounded corners.
